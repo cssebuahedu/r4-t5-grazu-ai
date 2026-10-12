@@ -1,3 +1,4 @@
+import type React from "react";
 import { useCallback, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -85,7 +86,7 @@ export function TestimonialCarousel() {
           </ScrollReveal>
         </div>
         <ScrollReveal variant="rise" delay={280} data-dir={dir} role="group" aria-roledescription="carousel" aria-label="Testimoni peran pengguna" className="relative mt-12 sm:mt-16"
-          onKeyDown={(event) => {
+          onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => {
             if (event.key === "ArrowLeft") { event.preventDefault(); previous(); }
             if (event.key === "ArrowRight") { event.preventDefault(); next(); }
           }} tabIndex={0}>

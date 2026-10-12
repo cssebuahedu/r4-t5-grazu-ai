@@ -20,7 +20,7 @@ function sharedObserver() {
     (entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting || entry.boundingClientRect.bottom < 0) {
-          (entry.target as HTMLElement).dataset.inview = "true";
+          (entry.target as HTMLElement).dataset["inview"] = "true";
           observer?.unobserve(entry.target);
         }
       }
@@ -48,7 +48,7 @@ export function ScrollReveal({ as = "div", variant = "up", delay = 0, className,
   useEffect(() => {
     const el = ref.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
-    if (reducedMotion()) { el.dataset.inview = "true"; return; }
+    if (reducedMotion()) { el.dataset["inview"] = "true"; return; }
     const io = sharedObserver();
     io.observe(el);
     return () => io.unobserve(el);
