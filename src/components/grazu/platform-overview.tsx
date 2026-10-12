@@ -5,6 +5,7 @@ import { useUseCases, statusClass } from "@/lib/use-cases";
 import { useOrgAdmin } from "@/lib/admin-orgs";
 import { initialAssessments, assessmentStatus, badgeClass } from "@/lib/compliance";
 import { useRedTeam } from "@/lib/red-teaming";
+import { AnimatedCounter, ScrollReveal } from "@/components/grazu/motion";
 
 export function PlatformOverview() {
   const products = useUseCases();
@@ -24,22 +25,22 @@ export function PlatformOverview() {
     <>
       <section aria-labelledby="platform-statistics-heading" className="bg-statistics text-statistics-foreground">
         <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12 lg:py-16">
-          <h2 id="platform-statistics-heading" className="max-w-2xl text-3xl font-semibold leading-tight sm:text-4xl">Memantau Adopsi, Memperkuat Tata Kelola AI</h2>
+          <ScrollReveal as="h2" id="platform-statistics-heading" className="max-w-2xl text-3xl font-semibold leading-tight sm:text-4xl">Memantau Adopsi, Memperkuat Tata Kelola AI</ScrollReveal>
           <dl className="mt-10 grid grid-cols-2 gap-y-8 lg:mt-12 lg:grid-cols-4">
             {statistics.map((stat, index) => (
-              <div key={stat.label} className={`min-w-0 ${index % 2 === 1 ? "border-l border-statistics-border pl-5 sm:pl-8" : "pr-5 sm:pr-8"} ${index === 2 ? "lg:border-l lg:border-statistics-border lg:pl-8" : ""}`}>
-                <dd className="text-5xl font-semibold tabular-nums sm:text-6xl">{stat.value}</dd>
+              <ScrollReveal key={stat.label} delay={150 + index * 120} className={`min-w-0 ${index % 2 === 1 ? "border-l border-statistics-border pl-5 sm:pl-8" : "pr-5 sm:pr-8"} ${index === 2 ? "lg:border-l lg:border-statistics-border lg:pl-8" : ""}`}>
+                <dd className="text-5xl font-semibold tabular-nums sm:text-6xl"><AnimatedCounter value={stat.value} /></dd>
                 <dt className="mt-4 text-sm font-medium sm:text-base">{stat.label}</dt>
                 <dd className="mt-2 text-xs leading-5 text-statistics-foreground/80">{stat.detail}</dd>
-              </div>
+              </ScrollReveal>
             ))}
           </dl>
-          <p className="mt-10 border-t border-statistics-border pt-5 text-sm font-medium text-statistics-accent">Data simulasi — Bukan statistik resmi nasional.</p>
+          <ScrollReveal as="p" variant="fade" delay={500} className="mt-10 border-t border-statistics-border pt-5 text-sm font-medium text-statistics-accent">Data simulasi — Bukan statistik resmi nasional.</ScrollReveal>
         </div>
       </section>
       <section aria-labelledby="platform-value-heading">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:gap-16 lg:px-12 lg:py-20">
-          <div role="img" aria-label="Pratinjau demo use case dan assessment kepatuhan GRAZU-AI" className="min-w-0 overflow-hidden rounded-lg border bg-background">
+          <ScrollReveal variant="rise" role="img" aria-label="Pratinjau demo use case dan assessment kepatuhan GRAZU-AI" className="min-w-0 overflow-hidden rounded-lg border bg-background">
             <div className="flex items-center justify-between gap-3 border-b bg-card px-5 py-4">
               <span className="text-sm font-bold">GRAZU<span className="text-primary">-AI</span></span>
               <span className="text-xs text-muted-foreground">Detail Use Case · Demo</span>
@@ -69,16 +70,16 @@ export function PlatformOverview() {
               ) : <p className="py-5 text-sm text-muted-foreground">Belum ada assessment terkait.</p>}
               <p className="mt-5 text-[11px] leading-5 text-muted-foreground">Pratinjau data demo · Bukan sertifikasi kepatuhan.</p>
             </div>
-          </div>
+          </ScrollReveal>
           <div className="min-w-0">
-            <h2 id="platform-value-heading" className="max-w-lg text-3xl font-semibold leading-tight sm:text-4xl">Dari Registrasi hingga Rekomendasi Kebijakan</h2>
-            <p className="mt-5 text-sm leading-7 text-muted-foreground">GRAZU-AI menghubungkan registrasi use case, penilaian risiko dan etika, pengujian keamanan AI, serta review kepatuhan. Analitik adopsi lintas sektor dan wilayah menjadi bahan kajian untuk rekomendasi kebijakan nasional.</p>
+            <ScrollReveal as="h2" delay={100} id="platform-value-heading" className="max-w-lg text-3xl font-semibold leading-tight sm:text-4xl">Dari Registrasi hingga Rekomendasi Kebijakan</ScrollReveal>
+            <ScrollReveal as="p" delay={220} className="mt-5 text-sm leading-7 text-muted-foreground">GRAZU-AI menghubungkan registrasi use case, penilaian risiko dan etika, pengujian keamanan AI, serta review kepatuhan. Analitik adopsi lintas sektor dan wilayah menjadi bahan kajian untuk rekomendasi kebijakan nasional.</ScrollReveal>
             <ol className="my-7 divide-y border-y">
               {["Registrasi use case & dokumen pendukung", "Penilaian risiko & prinsip etika", "Pengujian keamanan AI", "Review kepatuhan & bukti terkait", "Analitik adopsi & kajian kebijakan"].map((step, index) => (
-                <li key={step} className="flex items-start gap-4 py-3 text-sm"><span className="text-xs leading-5 text-primary">0{index + 1}</span><span>{step}</span></li>
+                <ScrollReveal as="li" variant="left" delay={320 + index * 100} key={step} className="flex items-start gap-4 py-3 text-sm"><span className="text-xs leading-5 text-primary">0{index + 1}</span><span>{step}</span></ScrollReveal>
               ))}
             </ol>
-            <Button asChild><Link to="/app">Jelajahi Platform<ArrowUpRight className="size-4" aria-hidden="true" /></Link></Button>
+            <ScrollReveal delay={800} className="w-fit"><Button asChild className="motion-lift"><Link to="/app">Jelajahi Platform<ArrowUpRight className="motion-arrow size-4" aria-hidden="true" /></Link></Button></ScrollReveal>
           </div>
         </div>
       </section>
