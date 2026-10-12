@@ -1,6 +1,8 @@
+import type React from "react";
 import { useCallback, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ScrollReveal } from "@/components/grazu/motion";
 import developerPortrait from "@/assets/testimonial-developer.jpg";
 import providerPortrait from "@/assets/testimonial-provider.jpg";
 import auditorPortrait from "@/assets/testimonial-auditor.jpg";
@@ -61,9 +63,11 @@ function TestimonialContent({ testimonial, active = false }: { testimonial: Test
 
 export function TestimonialCarousel() {
   const [index, setIndex] = useState(0);
+  const [dir, setDir] = useState<"next" | "prev">("next");
   const total = testimonials.length;
-  const previous = useCallback(() => setIndex((current) => (current - 1 + total) % total), [total]);
-  const next = useCallback(() => setIndex((current) => (current + 1) % total), [total]);
+  const previous = useCallback(() => { setDir("prev"); setIndex((current) => (current - 1 + total) % total); }, [total]);
+  const next = useCallback(() => { setDir("next"); setIndex((current) => (current + 1) % total); }, [total]);
+  const goTo = (target: number) => { setDir(target < index ? "prev" : "next"); setIndex(target); };
   const active = testimonials[index];
   const previousTestimonial = testimonials[(index - 1 + total) % total];
   const nextTestimonial = testimonials[(index + 1) % total];
@@ -73,29 +77,29 @@ export function TestimonialCarousel() {
     <section aria-labelledby="testimonial-heading">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12 lg:py-20">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-5 inline-block rounded-full bg-muted px-4 py-1 text-xs font-medium text-primary">Testimoni</p>
-          <h2 id="testimonial-heading" className="text-3xl font-semibold leading-tight sm:text-4xl">
+          <ScrollReveal as="p" variant="fade" className="mb-5 inline-block rounded-full bg-muted px-4 py-1 text-xs font-medium text-primary">Testimoni</ScrollReveal>
+          <ScrollReveal as="h2" delay={100} id="testimonial-heading" className="text-3xl font-semibold leading-tight sm:text-4xl">
             Bagaimana GRAZU-AI Mendukung <span className="text-primary">Ekosistem AI</span>
-          </h2>
-          <p className="mt-4 text-sm leading-6 text-muted-foreground">
+          </ScrollReveal>
+          <ScrollReveal as="p" delay={200} className="mt-4 text-sm leading-6 text-muted-foreground">
             Ilustrasi penerapan platform bagi penyedia layanan AI, pengembang, dan pemangku kebijakan.
-          </p>
+          </ScrollReveal>
         </div>
-        <div role="group" aria-roledescription="carousel" aria-label="Testimoni peran pengguna" className="relative mt-12 sm:mt-16"
-          onKeyDown={(event) => {
+        <ScrollReveal variant="rise" delay={280} data-dir={dir} role="group" aria-roledescription="carousel" aria-label="Testimoni peran pengguna" className="relative mt-12 sm:mt-16"
+          onKeyDown={(event: React.KeyboardEvent<HTMLElement>) => {
             if (event.key === "ArrowLeft") { event.preventDefault(); previous(); }
             if (event.key === "ArrowRight") { event.preventDefault(); next(); }
           }} tabIndex={0}>
           <div className="overflow-hidden">
             <div className="grid min-h-[380px] grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)_minmax(0,1fr)] lg:gap-16">
-              <div aria-hidden="true" className="hidden w-[340px] justify-self-end opacity-30 lg:block">
-                <TestimonialContent testimonial={previousTestimonial} />
+              <div aria-hidden="true" className="slide-side hidden w-[340px] justify-self-end opacity-30 lg:block">
+                <div key={`p-${index}`} className="slide-enter"><TestimonialContent testimonial={previousTestimonial} /></div>
               </div>
               <div aria-live="polite" aria-atomic="true" className="min-w-0">
-                <TestimonialContent testimonial={active} active />
+                <div key={index} className="slide-enter"><TestimonialContent testimonial={active} active /></div>
               </div>
-              <div aria-hidden="true" className="hidden w-[340px] opacity-30 lg:block">
-                <TestimonialContent testimonial={nextTestimonial} />
+              <div aria-hidden="true" className="slide-side hidden w-[340px] opacity-30 lg:block">
+                <div key={`n-${index}`} className="slide-enter"><TestimonialContent testimonial={nextTestimonial} /></div>
               </div>
             </div>
           </div>
@@ -105,7 +109,7 @@ export function TestimonialCarousel() {
               {testimonials.map((testimonial, dotIndex) => (
                 <Button key={testimonial.role} variant="ghost" size="icon-sm" aria-pressed={dotIndex === index}
                   aria-label={`Testimoni ${dotIndex + 1}: ${testimonial.role}`} title={testimonial.role}
-                  onClick={() => setIndex(dotIndex)} className="rounded-full">
+                  onClick={() => goTo(dotIndex)} className="rounded-full">
                   <span className={`size-2.5 rounded-full ${dotIndex === index ? "bg-primary" : "bg-muted-foreground/25"}`} />
                 </Button>
               ))}
@@ -115,7 +119,7 @@ export function TestimonialCarousel() {
           <p className="mt-5 text-center text-xs leading-5 text-muted-foreground">
             Ilustrasi skenario pengguna — Bukan testimoni pelanggan nyata. Potret merupakan ilustrasi AI.
           </p>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

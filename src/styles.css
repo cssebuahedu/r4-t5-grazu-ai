@@ -366,3 +366,81 @@
   height: var(--nr, 24px);
   background: radial-gradient(circle at 100% 0, transparent calc(var(--nr, 24px) - 0.5px), var(--notch-fill, var(--background)) var(--nr, 24px));
 }
+
+/* ───────── Homepage motion system ─────────
+ * Tokens: entrance 750–950ms expo-out, stagger ~110ms, hover 220ms.
+ * Hidden states only apply when JS marked html.motion-ready AND the user has not
+ * requested reduced motion, so content never depends on animation to be visible. */
+:root {
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --reveal-y: 24px;
+  --reveal-x: 18px;
+}
+@media (max-width: 767px) {
+  :root { --reveal-y: 14px; --reveal-x: 10px; }
+}
+@keyframes motion-rise { from { opacity: 0; translate: 0 var(--reveal-y); } }
+@keyframes motion-fade { from { opacity: 0; } }
+@keyframes hero-photo-in { from { opacity: 0; scale: 1.04; } }
+@keyframes tab-in-next { from { opacity: 0; translate: 14px 0; } }
+@keyframes tab-in-prev { from { opacity: 0; translate: -14px 0; } }
+@keyframes slide-in-next { from { opacity: 0; translate: 40px 0; } }
+@keyframes slide-in-prev { from { opacity: 0; translate: -40px 0; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .motion-ready [data-reveal] {
+    opacity: 0;
+    transition:
+      opacity 750ms var(--ease-out-expo) var(--d, 0ms),
+      translate 850ms var(--ease-out-expo) var(--d, 0ms),
+      scale 900ms var(--ease-out-expo) var(--d, 0ms),
+      color 300ms ease-out, background-color 250ms ease-out, border-color 250ms ease-out;
+  }
+  .motion-ready [data-reveal="up"] { translate: 0 var(--reveal-y); }
+  .motion-ready [data-reveal="rise"] { translate: 0 calc(var(--reveal-y) * 1.5); transition-duration: 950ms; }
+  .motion-ready [data-reveal="left"] { translate: calc(var(--reveal-x) * -1) 0; }
+  .motion-ready [data-reveal="fade"] { translate: 0 8px; }
+  .motion-ready [data-reveal="line"] { opacity: 1; scale: 0 1; transform-origin: left; }
+  .motion-ready [data-reveal="image"] { translate: 0 var(--reveal-y); }
+  .motion-ready [data-reveal="image"] img {
+    transform: scale(1.05);
+    transition: transform 1100ms ease-out var(--d, 0ms), scale 500ms ease-out;
+  }
+  .motion-ready [data-reveal][data-inview] { opacity: 1; translate: 0 0; scale: 1 1; }
+  .motion-ready [data-reveal="image"][data-inview] img { transform: none; }
+
+  /* Hero: cinematic load sequence (no JS needed) */
+  .hero-photo { animation: hero-photo-in 1400ms var(--ease-out-expo) backwards; }
+  .hero-rise { display: inline-block; animation: motion-rise 800ms var(--ease-out-expo) var(--d, 0ms) backwards; }
+  .hero-fade { animation: motion-rise 750ms var(--ease-out-expo) var(--d, 0ms) backwards; }
+
+  /* Feature tabs: content transitions directionally; inner parts stagger once in view */
+  [data-inview] .tab-panel[data-state="active"] { animation: tab-in-next 420ms var(--ease-out-expo) backwards; }
+  [data-inview][data-dir="prev"] .tab-panel[data-state="active"] { animation-name: tab-in-prev; }
+  [data-inview] .tab-panel[data-state="active"] .tab-stagger > * { animation: motion-rise 600ms var(--ease-out-expo) backwards; }
+  .tab-stagger > :nth-child(2) { animation-delay: 80ms !important; }
+  .tab-stagger > :nth-child(3) { animation-delay: 160ms !important; }
+  .tab-stagger > :nth-child(4) { animation-delay: 240ms !important; }
+  .tab-stagger > :nth-child(5) { animation-delay: 320ms !important; }
+  [data-inview] .tab-panel[data-state="active"] .tab-preview { animation: motion-fade 700ms ease-out 150ms backwards; }
+
+  /* Testimonial carousel: spatial slide in the navigation direction */
+  .slide-enter { animation: slide-in-next 600ms var(--ease-out-expo) backwards; }
+  [data-dir="prev"] .slide-enter { animation-name: slide-in-prev; }
+  .slide-enter img { animation: motion-fade 700ms ease-out 80ms backwards; }
+  .slide-enter blockquote { animation: motion-rise 650ms var(--ease-out-expo) 120ms backwards; }
+  .slide-side { scale: 0.96; transition: scale 500ms var(--ease-out-expo); }
+
+  /* FAQ */
+  .faq-list [role="region"] { animation-duration: 320ms; animation-timing-function: var(--ease-out-expo); }
+  .faq-answer { animation: motion-rise 420ms var(--ease-out-expo) 60ms backwards; }
+}
+
+/* Interaction feedback (kept for all users; transitions are removed under reduced motion globally) */
+.motion-lift { transition: translate 220ms ease-out, background-color 220ms ease-out, color 220ms ease-out, border-color 220ms ease-out; }
+.motion-lift:hover { translate: 0 -2px; }
+.motion-lift .motion-arrow { display: inline-block; transition: translate 220ms ease-out; }
+.motion-lift:hover .motion-arrow { translate: 2px -2px; }
+.motion-lift:hover .motion-arrow-down { translate: 0 3px; }
+.faq-icon-v { transition: rotate 300ms var(--ease-out-expo); }
+[data-open="true"] > .faq-icon-v { rotate: 90deg; }

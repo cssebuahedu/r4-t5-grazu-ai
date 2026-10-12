@@ -1,3 +1,4 @@
+import type React from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Brand } from "@/components/grazu/brand";
@@ -10,6 +11,12 @@ import { FaqAccordion } from "@/components/grazu/faq";
 import { NewsSection } from "@/components/grazu/news-section";
 import { FinalCta } from "@/components/grazu/final-cta";
 import jakarta from "@/assets/jakarta.jpg";
+import { ScrollReveal, useParallax } from "@/components/grazu/motion";
+
+const heroLines = [
+  { words: ["Tata", "Kelola", "Kecerdasan"], delay: 250 },
+  { words: ["Artifisial", "yang"], delay: 380 },
+];
 
 export const Route = createFileRoute("/")({
   head: () =>
@@ -20,6 +27,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 function Index() {
+  const heroPhoto = useParallax<HTMLImageElement>(0.18);
   return (
     <div className="bg-card">
       <header className="border-b">
@@ -55,31 +63,38 @@ function Index() {
             height={1024}
             alt="Monumen Nasional dan panorama kota Jakarta"
             className="hero-photo"
+            ref={heroPhoto}
           />
           <div className="hero-veil" />
           <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-12 lg:py-24">
             <h1 className="hero-heading max-w-[650px]">
-              Tata Kelola Kecerdasan Artifisial yang{" "}
-              <span className="text-primary">Bertanggung Jawab</span>
+              {heroLines.map((line) =>
+                line.words.map((word, i) => (
+                  <span key={word}>
+                    <span className="hero-rise" style={{ "--d": `${line.delay + i * 40}ms` } as React.CSSProperties}>{word}</span>{" "}
+                  </span>
+                )),
+              )}
+              <span className="hero-rise text-primary" style={{ "--d": "560ms" } as React.CSSProperties}>Bertanggung Jawab</span>
             </h1>
-            <p className="mt-6 max-w-[540px] text-base leading-7 text-muted-foreground">
+            <p style={{ "--d": "720ms" } as React.CSSProperties} className="hero-fade mt-6 max-w-[540px] text-base leading-7 text-muted-foreground">
               Platform terpadu untuk pemantauan adopsi, evaluasi risiko, keamanan, dan kepatuhan
               kecerdasan artifisial di Indonesia.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-6">
-              <Button asChild size="lg" className="h-12 px-6">
+              <Button asChild size="lg" style={{ "--d": "860ms" } as React.CSSProperties} className="hero-fade motion-lift h-12 px-6">
                 <Link to="/app">
-                  Buka Dashboard <span aria-hidden="true">↗</span>
+                  Buka Dashboard <span className="motion-arrow" aria-hidden="true">↗</span>
                 </Link>
               </Button>
-              <a href="#tentang" className="text-sm font-medium text-foreground hover:text-primary">
+              <a href="#tentang" style={{ "--d": "960ms" } as React.CSSProperties} className="hero-fade motion-lift text-sm font-medium text-foreground hover:text-primary">
                 Tentang Platform{" "}
-                <span className="ml-2" aria-hidden="true">
+                <span className="motion-arrow motion-arrow-down ml-2" aria-hidden="true">
                   ↓
                 </span>
               </a>
             </div>
-            <p className="mt-6 text-xs text-muted-foreground">
+            <p style={{ "--d": "1080ms" } as React.CSSProperties} className="hero-fade mt-6 text-xs text-muted-foreground">
               Transparan. Aman. Bertanggung jawab.
             </p>
           </div>
@@ -91,16 +106,16 @@ function Index() {
           <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12 lg:py-20">
             <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
               <div className="lg:col-span-7">
-                <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
+                <ScrollReveal as="p" variant="fade" className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
                   Fondasi Kepercayaan Digital
-                </p>
-                <h2 id="tentang-heading" className="max-w-xl text-2xl font-semibold leading-tight tracking-tight sm:text-3xl lg:text-4xl">
+                </ScrollReveal>
+                <ScrollReveal as="h2" delay={100} id="tentang-heading" className="max-w-xl text-2xl font-semibold leading-tight tracking-tight sm:text-3xl lg:text-4xl">
                   Tiga Pilar untuk Ekosistem AI yang Tepercaya
-                </h2>
+                </ScrollReveal>
               </div>
-              <p className="max-w-md text-sm leading-7 text-muted-foreground lg:col-span-5 lg:self-end lg:justify-self-end">
+              <ScrollReveal as="p" delay={220} className="max-w-md text-sm leading-7 text-muted-foreground lg:col-span-5 lg:self-end lg:justify-self-end">
                 Grazu AI mengintegrasikan tata kelola, keamanan, dan analitik untuk mendukung pengembangan serta pemanfaatan kecerdasan artifisial yang bertanggung jawab di Indonesia.
-              </p>
+              </ScrollReveal>
             </div>
             <ol className="mt-12 grid border-t md:grid-cols-3 lg:mt-16">
               {[
@@ -113,11 +128,11 @@ function Index() {
                   className={`group border-b py-8 md:border-b-0 md:py-10 ${i > 0 ? "md:border-l md:pl-8 lg:pl-10" : ""} ${i < 2 ? "md:pr-8 lg:pr-10" : ""}`}
                 >
                   <div className="flex items-baseline gap-4">
-                    <span className="text-sm font-semibold tabular-nums text-primary">{item.n}</span>
-                    <span className="h-px flex-1 bg-border transition-colors group-hover:bg-primary" aria-hidden="true" />
+                    <ScrollReveal as="span" delay={i * 140} className="text-sm font-semibold tabular-nums text-primary">{item.n}</ScrollReveal>
+                    <ScrollReveal as="span" variant="line" delay={i * 140 + 60} className="h-px flex-1 bg-border group-hover:bg-primary" aria-hidden="true" />
                   </div>
-                  <h3 className="mt-6 text-lg font-semibold">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.text}</p>
+                  <ScrollReveal as="h3" delay={i * 140 + 100} className="mt-6 text-lg font-semibold">{item.title}</ScrollReveal>
+                  <ScrollReveal as="p" delay={i * 140 + 200} className="mt-3 text-sm leading-7 text-muted-foreground">{item.text}</ScrollReveal>
                 </li>
               ))}
             </ol>
@@ -130,14 +145,14 @@ function Index() {
       <footer className="bg-background">
         <div className="mx-auto max-w-7xl px-6 pb-8 pt-14 lg:px-12">
           <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-            <div className="min-w-0">
+            <ScrollReveal variant="fade" className="min-w-0">
               <Brand />
               <p className="mt-5 max-w-xs text-sm leading-6 text-muted-foreground">
                 Mendukung ekosistem kecerdasan artifisial Indonesia yang transparan, aman, dan bertanggung jawab.
               </p>
               <p className="mt-5 text-xs font-medium text-primary">Dibangun untuk Indonesia.</p>
-            </div>
-            <nav aria-label="Footer platform" className="min-w-0">
+            </ScrollReveal>
+            <ScrollReveal as="nav" variant="fade" delay={60} aria-label="Footer platform" className="min-w-0">
               <h2 className="mb-5 text-xs font-semibold uppercase text-foreground">Platform</h2>
               <ul className="space-y-3 text-sm text-muted-foreground">
                 <li><a href="#tentang" className="hover:text-primary">Tentang Platform</a></li>
@@ -146,16 +161,16 @@ function Index() {
                 <li><Link to="/app/red-teaming" className="hover:text-primary">AI Red Teaming</Link></li>
                 <li><Link to="/app/compliance" className="hover:text-primary">Kepatuhan Regulasi</Link></li>
               </ul>
-            </nav>
-            <nav aria-label="Footer informasi publik" className="min-w-0">
+            </ScrollReveal>
+            <ScrollReveal as="nav" variant="fade" delay={120} aria-label="Footer informasi publik" className="min-w-0">
               <h2 className="mb-5 text-xs font-semibold uppercase text-foreground">Informasi Publik</h2>
               <ul className="space-y-3 text-sm text-muted-foreground">
                 <li><Link to="/explore" className="hover:text-primary">Eksplorasi AI</Link></li>
                 <li><Link to="/knowledge" className="hover:text-primary">Pusat Pengetahuan</Link></li>
                 <li><a href="#faq" className="hover:text-primary">Pertanyaan Umum</a></li>
               </ul>
-            </nav>
-            <nav aria-label="Footer layanan" className="min-w-0">
+            </ScrollReveal>
+            <ScrollReveal as="nav" variant="fade" delay={180} aria-label="Footer layanan" className="min-w-0">
               <h2 className="mb-5 text-xs font-semibold uppercase text-foreground">Layanan & Akses</h2>
               <ul className="space-y-3 text-sm text-muted-foreground">
                 <li><Link to="/app/assistant" className="hover:text-primary">GRAZU AI Assistant</Link></li>
@@ -163,7 +178,7 @@ function Index() {
                 <li><Link to="/signin" className="hover:text-primary">Masuk</Link></li>
                 <li><Link to="/signup" className="hover:text-primary">Buat Akun</Link></li>
               </ul>
-            </nav>
+            </ScrollReveal>
           </div>
           <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t pt-7 text-xs text-muted-foreground">
             <p>© 2026 GRAZU-AI. Seluruh hak cipta dilindungi.</p>

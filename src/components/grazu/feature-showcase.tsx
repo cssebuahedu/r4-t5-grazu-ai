@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { ScrollReveal } from "@/components/grazu/motion";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -60,7 +62,7 @@ type Feature = (typeof features)[number];
 
 function DashboardPreview({ feature }: { feature: Feature }) {
   return (
-    <div className="flex min-w-0 items-center bg-background p-5 sm:p-8 lg:p-9">
+    <div className="tab-preview flex min-w-0 items-center bg-background p-5 sm:p-8 lg:p-9">
       <div role="img" aria-label={`Pratinjau demonstrasi ${feature.screen}`} className="w-full overflow-hidden rounded-md border bg-card">
         <div className="flex items-center justify-between gap-3 border-b px-4 py-3">
           <span className="text-xs font-bold">GRAZU<span className="text-primary">-AI</span></span>
@@ -109,34 +111,43 @@ function DashboardPreview({ feature }: { feature: Feature }) {
 }
 
 export function FeatureShowcase() {
+  const [active, setActive] = useState<string>("registry");
+  const [dir, setDir] = useState<"next" | "prev">("next");
+  const select = (value: string) => {
+    const order = features.map((f) => f.id as string);
+    setDir(order.indexOf(value) < order.indexOf(active) ? "prev" : "next");
+    setActive(value);
+  };
   return (
     <section aria-labelledby="feature-showcase-heading">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-12 lg:py-20">
-        <h2 id="feature-showcase-heading" className="mx-auto max-w-2xl text-center text-3xl font-semibold leading-tight sm:text-4xl">Satu Platform, Tata Kelola AI Terintegrasi</h2>
-        <Tabs defaultValue="registry" className="mt-9 sm:mt-12">
+        <ScrollReveal as="h2" id="feature-showcase-heading" className="mx-auto max-w-2xl text-center text-3xl font-semibold leading-tight sm:text-4xl">Satu Platform, Tata Kelola AI Terintegrasi</ScrollReveal>
+        <Tabs value={active} onValueChange={select} className="mt-9 sm:mt-12">
           <div className="overflow-x-auto">
             <TabsList aria-label="Fitur GRAZU-AI" className="flex h-auto w-max min-w-full justify-between gap-6 rounded-none border-b bg-transparent p-0">
-              {features.map((feature) => (
-                <TabsTrigger key={feature.id} value={feature.id} className="shrink-0 rounded-none border-b-2 border-transparent px-0 pb-4 pt-2 text-xs data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none sm:text-sm">{feature.tab}</TabsTrigger>
+              {features.map((feature, index) => (
+                <ScrollReveal as={TabsTrigger} variant="fade" delay={120 + index * 90} key={feature.id} value={feature.id} className="relative shrink-0 rounded-none px-0 pb-4 pt-2 text-xs after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 after:ease-out data-[state=active]:after:scale-x-100 data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none sm:text-sm">{feature.tab}</ScrollReveal>
               ))}
             </TabsList>
           </div>
+          <ScrollReveal variant="rise" delay={250} data-dir={dir}>
           {features.map((feature, index) => (
-            <TabsContent key={feature.id} value={feature.id} className="mt-6 overflow-hidden rounded-lg border">
+            <TabsContent key={feature.id} value={feature.id} className="tab-panel mt-6 overflow-hidden rounded-lg border">
               <div className="grid lg:min-h-[450px] lg:grid-cols-[0.9fr_1.1fr]">
-                <div className="flex flex-col items-start px-6 py-8 sm:p-9 lg:p-10">
+                <div className="tab-stagger flex flex-col items-start px-6 py-8 sm:p-9 lg:p-10">
                   <p className="mb-5 text-xs font-medium text-primary">0{index + 1} / {feature.tab}</p>
                   <h3 className="max-w-sm text-2xl font-semibold leading-snug sm:text-3xl">{feature.heading}</h3>
                   <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">{feature.description}</p>
                   <ul className="my-6 w-full space-y-3 text-sm">
                     {feature.capabilities.map((capability) => <li key={capability} className="flex items-start gap-3"><span aria-hidden="true" className="mt-2 size-1 shrink-0 rounded-full bg-primary" /><span>{capability}</span></li>)}
                   </ul>
-                  <Button asChild className="mt-auto h-auto min-h-10 max-w-full whitespace-normal py-2 text-left"><Link to={feature.to}>{feature.cta}<ArrowUpRight className="size-4 shrink-0" aria-hidden="true" /></Link></Button>
+                  <Button asChild className="motion-lift mt-auto h-auto min-h-10 max-w-full whitespace-normal py-2 text-left"><Link to={feature.to}>{feature.cta}<ArrowUpRight className="motion-arrow size-4 shrink-0" aria-hidden="true" /></Link></Button>
                 </div>
                 <DashboardPreview feature={feature} />
               </div>
             </TabsContent>
           ))}
+          </ScrollReveal>
         </Tabs>
       </div>
     </section>

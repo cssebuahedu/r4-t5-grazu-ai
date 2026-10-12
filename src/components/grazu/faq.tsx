@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ScrollReveal } from "@/components/grazu/motion";
 
 /**
  * Public FAQ. Answers describe the prototype as it behaves today: simulated
@@ -67,41 +67,35 @@ export function FaqAccordion() {
     <section id="faq" aria-labelledby="faq-heading" className="scroll-mt-8">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16 lg:px-12 lg:py-20">
         <div className="min-w-0">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary">FAQ</p>
-          <h2 id="faq-heading" className="text-2xl font-semibold leading-snug sm:text-[28px]">
+          <ScrollReveal as="p" variant="fade" className="mb-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary">FAQ</ScrollReveal>
+          <ScrollReveal as="h2" delay={100} id="faq-heading" className="text-2xl font-semibold leading-snug sm:text-[28px]">
             Pertanyaan yang Sering Diajukan
-          </h2>
-          <p className="mt-4 text-sm leading-6 text-muted-foreground">
+          </ScrollReveal>
+          <ScrollReveal as="p" delay={200} className="mt-4 text-sm leading-6 text-muted-foreground">
             Temukan informasi mengenai registrasi use case, tata kelola, keamanan, dan layanan
             GRAZU-AI.
-          </p>
+          </ScrollReveal>
         </div>
         <Accordion
           type="single"
           collapsible
           value={open ?? ""}
           onValueChange={(v) => setOpen(v || null)}
-          className="min-w-0 border-t"
+          className="faq-list min-w-0 border-t"
         >
-          {faqs.map((item) => (
-            <AccordionItem key={item.id} value={item.id} className="border-border/70">
+          {faqs.map((item, index) => (
+            <ScrollReveal as={AccordionItem} variant="fade" delay={Math.min(index, 6) * 70} key={item.id} value={item.id} className="border-border/70">
               <AccordionTrigger className="gap-4 py-4 text-sm font-medium hover:no-underline [&>svg]:hidden">
                 <span className="text-left">{item.q}</span>
-                <span
-                  aria-hidden="true"
-                  className="flex size-4 shrink-0 items-center justify-center text-muted-foreground"
-                >
-                  {open === item.id ? (
-                    <Minus className="size-4" strokeWidth={1.5} />
-                  ) : (
-                    <Plus className="size-4" strokeWidth={1.5} />
-                  )}
+                <span aria-hidden="true" data-open={open === item.id} className="relative size-4 shrink-0 text-muted-foreground">
+                  <span className="absolute inset-x-[2px] top-1/2 h-[1.5px] -translate-y-1/2 rounded-full bg-current" />
+                  <span className="faq-icon-v absolute inset-y-[2px] left-1/2 w-[1.5px] -translate-x-1/2 rounded-full bg-current" />
                 </span>
               </AccordionTrigger>
               <AccordionContent className="pr-0 text-sm leading-6 text-muted-foreground">
-                <p className="max-w-2xl pb-5">{item.a}</p>
+                <p className="faq-answer max-w-2xl pb-5">{item.a}</p>
               </AccordionContent>
-            </AccordionItem>
+            </ScrollReveal>
           ))}
         </Accordion>
       </div>
