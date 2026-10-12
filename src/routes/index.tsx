@@ -1,0 +1,177 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { Brand } from "@/components/grazu/brand";
+import { pageHead } from "@/lib/grazu-navigation";
+import { GuestChat } from "@/components/grazu/guest-chat";
+import { FeatureShowcase } from "@/components/grazu/feature-showcase";
+import { PlatformOverview } from "@/components/grazu/platform-overview";
+import { TestimonialCarousel } from "@/components/grazu/testimonial-carousel";
+import { FaqAccordion } from "@/components/grazu/faq";
+import { NewsSection } from "@/components/grazu/news-section";
+import { FinalCta } from "@/components/grazu/final-cta";
+import jakarta from "@/assets/jakarta.jpg";
+
+export const Route = createFileRoute("/")({
+  head: () =>
+    pageHead(
+      "Tata Kelola AI Indonesia",
+      "Platform terpadu untuk pemantauan adopsi, evaluasi risiko, keamanan, dan kepatuhan kecerdasan artifisial di Indonesia.",
+    ),
+  component: Index,
+});
+function Index() {
+  return (
+    <div className="bg-card">
+      <header className="border-b">
+        <nav
+          aria-label="Navigasi beranda"
+          className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-12"
+        >
+          <Brand />
+          <div className="flex items-center gap-6 text-sm md:gap-10">
+            <Link to="/" className="hidden font-medium text-primary sm:block">
+              Beranda
+            </Link>
+            <a href="#tentang" className="hidden text-muted-foreground hover:text-primary sm:block">
+              Tentang Platform
+            </a>
+            <Link to="/explore" className="hidden text-muted-foreground hover:text-primary md:block">
+              Eksplorasi
+            </Link>
+            <a href="#berita-informasi" className="hidden text-muted-foreground hover:text-primary md:block">
+              Berita & Informasi
+            </a>
+            <Button asChild variant="outline" className="border-primary/30 bg-card text-primary">
+              <Link to="/signin">Masuk</Link>
+            </Button>
+          </div>
+        </nav>
+      </header>
+      <main>
+        <section className="hero">
+          <img
+            src={jakarta}
+            width={1536}
+            height={1024}
+            alt="Monumen Nasional dan panorama kota Jakarta"
+            className="hero-photo"
+          />
+          <div className="hero-veil" />
+          <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-12 lg:py-24">
+            <h1 className="hero-heading max-w-[650px]">
+              Tata Kelola Kecerdasan Artifisial yang{" "}
+              <span className="text-primary">Bertanggung Jawab</span>
+            </h1>
+            <p className="mt-6 max-w-[540px] text-base leading-7 text-muted-foreground">
+              Platform terpadu untuk pemantauan adopsi, evaluasi risiko, keamanan, dan kepatuhan
+              kecerdasan artifisial di Indonesia.
+            </p>
+            <div className="mt-9 flex flex-wrap items-center gap-6">
+              <Button asChild size="lg" className="h-12 px-6">
+                <Link to="/app">
+                  Buka Dashboard <span aria-hidden="true">↗</span>
+                </Link>
+              </Button>
+              <a href="#tentang" className="text-sm font-medium text-foreground hover:text-primary">
+                Tentang Platform{" "}
+                <span className="ml-2" aria-hidden="true">
+                  ↓
+                </span>
+              </a>
+            </div>
+            <p className="mt-6 text-xs text-muted-foreground">
+              Transparan. Aman. Bertanggung jawab.
+            </p>
+          </div>
+        </section>
+        <FeatureShowcase />
+        <PlatformOverview />
+        <TestimonialCarousel />
+        <section id="tentang" aria-labelledby="tentang-heading" className="scroll-mt-6">
+          <div className="mx-auto max-w-7xl px-6 py-14 lg:px-12 lg:py-20">
+            <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
+              <div className="lg:col-span-7">
+                <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
+                  Fondasi Kepercayaan Digital
+                </p>
+                <h2 id="tentang-heading" className="max-w-xl text-2xl font-semibold leading-tight tracking-tight sm:text-3xl lg:text-4xl">
+                  Tiga Pilar untuk Ekosistem AI yang Tepercaya
+                </h2>
+              </div>
+              <p className="max-w-md text-sm leading-7 text-muted-foreground lg:col-span-5 lg:self-end lg:justify-self-end">
+                Grazu AI mengintegrasikan tata kelola, keamanan, dan analitik untuk mendukung pengembangan serta pemanfaatan kecerdasan artifisial yang bertanggung jawab di Indonesia.
+              </p>
+            </div>
+            <ol className="mt-12 grid border-t md:grid-cols-3 lg:mt-16">
+              {[
+                { n: "01", title: "Tata Kelola AI", text: "Mendukung pendataan use case, penilaian risiko, dan pengawasan penerapan AI melalui tata kelola yang transparan dan akuntabel." },
+                { n: "02", title: "Keamanan AI", text: "Membantu mengidentifikasi risiko keamanan, mengevaluasi kerentanan, dan memperkuat keandalan sistem AI secara berkelanjutan." },
+                { n: "03", title: "Analitik Nasional", text: "Menyediakan wawasan mengenai perkembangan dan distribusi adopsi AI sebagai dasar evaluasi, perencanaan, dan pengambilan kebijakan." },
+              ].map((item, i) => (
+                <li
+                  key={item.n}
+                  className={`group border-b py-8 md:border-b-0 md:py-10 ${i > 0 ? "md:border-l md:pl-8 lg:pl-10" : ""} ${i < 2 ? "md:pr-8 lg:pr-10" : ""}`}
+                >
+                  <div className="flex items-baseline gap-4">
+                    <span className="text-sm font-semibold tabular-nums text-primary">{item.n}</span>
+                    <span className="h-px flex-1 bg-border transition-colors group-hover:bg-primary" aria-hidden="true" />
+                  </div>
+                  <h3 className="mt-6 text-lg font-semibold">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.text}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+        <NewsSection />
+        <FaqAccordion />
+        <FinalCta />
+      </main>
+      <footer className="bg-background">
+        <div className="mx-auto max-w-7xl px-6 pb-8 pt-14 lg:px-12">
+          <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+            <div className="min-w-0">
+              <Brand />
+              <p className="mt-5 max-w-xs text-sm leading-6 text-muted-foreground">
+                Mendukung ekosistem kecerdasan artifisial Indonesia yang transparan, aman, dan bertanggung jawab.
+              </p>
+              <p className="mt-5 text-xs font-medium text-primary">Dibangun untuk Indonesia.</p>
+            </div>
+            <nav aria-label="Footer platform" className="min-w-0">
+              <h2 className="mb-5 text-xs font-semibold uppercase text-foreground">Platform</h2>
+              <ul className="space-y-3 text-sm text-muted-foreground">
+                <li><a href="#tentang" className="hover:text-primary">Tentang Platform</a></li>
+                <li><Link to="/app/use-cases" className="hover:text-primary">Registrasi Use Case</Link></li>
+                <li><Link to="/app/risk" className="hover:text-primary">Penilaian Risiko</Link></li>
+                <li><Link to="/app/red-teaming" className="hover:text-primary">AI Red Teaming</Link></li>
+                <li><Link to="/app/compliance" className="hover:text-primary">Kepatuhan Regulasi</Link></li>
+              </ul>
+            </nav>
+            <nav aria-label="Footer informasi publik" className="min-w-0">
+              <h2 className="mb-5 text-xs font-semibold uppercase text-foreground">Informasi Publik</h2>
+              <ul className="space-y-3 text-sm text-muted-foreground">
+                <li><Link to="/explore" className="hover:text-primary">Eksplorasi AI</Link></li>
+                <li><Link to="/knowledge" className="hover:text-primary">Pusat Pengetahuan</Link></li>
+                <li><a href="#faq" className="hover:text-primary">Pertanyaan Umum</a></li>
+              </ul>
+            </nav>
+            <nav aria-label="Footer layanan" className="min-w-0">
+              <h2 className="mb-5 text-xs font-semibold uppercase text-foreground">Layanan & Akses</h2>
+              <ul className="space-y-3 text-sm text-muted-foreground">
+                <li><Link to="/app/assistant" className="hover:text-primary">GRAZU AI Assistant</Link></li>
+                <li><Link to="/app/use-cases/new" className="hover:text-primary">Daftarkan Use Case</Link></li>
+                <li><Link to="/signin" className="hover:text-primary">Masuk</Link></li>
+                <li><Link to="/signup" className="hover:text-primary">Buat Akun</Link></li>
+              </ul>
+            </nav>
+          </div>
+          <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t pt-7 text-xs text-muted-foreground">
+            <p>© 2026 GRAZU-AI. Seluruh hak cipta dilindungi.</p>
+            <span>Transparan. Aman. Bertanggung jawab.</span>
+          </div>
+        </div>
+      </footer>
+      <GuestChat />
+    </div>
+  );
+}
